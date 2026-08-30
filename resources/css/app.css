@@ -1,0 +1,131 @@
+/* ============================================================
+   FILE: resources/css/app.css
+   Extends existing style.css — import it first, then add these
+   ============================================================ */
+
+/* Import the base styles from the existing frontend */
+@import url('../../public/css/elite-essence.css');
+/* or paste existing style.css content here */
+
+/* ── SPINNER ── */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
+    border-top-color: var(--text);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.spinner-sm {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid rgba(255, 255, 255, .4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── CART TOTAL BREAKDOWN ── */
+.cart-total-breakdown {
+    border-top: 1px solid var(--border);
+    padding-top: .75rem;
+    margin-bottom: .75rem;
+}
+
+.cart-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: .8rem;
+    color: var(--text-muted);
+    padding: .25rem 0;
+}
+
+/* ── CHECKOUT ── */
+.checkout-step {
+    transition: opacity .25s;
+}
+
+.checkout-step.hidden {
+    display: none;
+}
+
+/* ── ADMIN TABLE PAGINATION OVERRIDE ── */
+.admin-content nav .flex {
+    gap: .35rem;
+    flex-wrap: wrap;
+}
+
+.admin-content nav .relative {
+    display: none;
+}
+
+.admin-content nav a,
+.admin-content nav span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    font-size: .8rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-muted);
+    transition: all .15s;
+    text-decoration: none;
+}
+
+.admin-content nav a:hover {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+}
+
+/* ── TOAST SUCCESS/ERROR ── */
+.toast.success {
+    background: #1a5c2c !important;
+}
+
+.toast.error {
+    background: #8b1a1a !important;
+}
+
+/* ── LIVEWIRE LOADING OVERLAY ── */
+[wire\:loading] {
+    transition: opacity .15s;
+}
+
+/* ── PRODUCT DETAIL PAGE RESPONSIVE ── */
+@media (max-width: 900px) {
+    .product-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .pdp-gallery {
+        flex-direction: column-reverse;
+    }
+
+    .pdp-thumbs {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+}
+
+/* ── ADMIN RESPONSIVE ── */
+@media (max-width: 1024px) {
+    .admin-sidebar {
+        display: none;
+    }
+
+    .admin-main {
+        width: 100%;
+    }
+}
