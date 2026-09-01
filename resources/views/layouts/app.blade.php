@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" x-data="{ theme: localStorage.getItem('eliteEssenceTheme') || 'light' }" x-init="$el.setAttribute('data-theme', theme)" :data-theme="theme">
+<html lang="en" data-theme="light" x-data="{ theme: localStorage.getItem('bookDepotTheme') || 'light' }" x-init="$el.setAttribute('data-theme', theme)" :data-theme="theme">
 
 <head>
     <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
 
     {{-- Vite Assets --}}
@@ -40,6 +40,24 @@
         </div>
     </div>
 
+    {{-- ===== TOP UTILITY BAR ===== --}}
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <div class="top-bar-links">
+                <span>📞 Customer Support: (042) 111-222-333</span>
+                <span>🚚 Free Delivery on Orders Over $150</span>
+            </div>
+            <div class="top-bar-links">
+                @guest
+                    <a href="{{ route('login') }}">Login</a>
+                    <a href="{{ route('register') }}">Register</a>
+                @else
+                    <a href="{{ route('orders') }}">Track Order</a>
+                @endguest
+            </div>
+        </div>
+    </div>
+
     {{-- ===== NAVBAR ===== --}}
     <header id="navbar" class="navbar" x-data="{ menuOpen: false }">
         <div class="nav-inner">
@@ -47,7 +65,27 @@
                 <span></span><span></span><span></span>
             </button>
 
-            <a href="{{ route('home') }}" class="nav-logo">Book Depot</a>
+            <a href="{{ route('home') }}" class="nav-logo">
+                <svg class="nav-logo-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    viewBox="0 0 24 24">
+                    <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+                </svg>
+                Book Depot
+            </a>
+
+            <form class="nav-search" method="GET" action="{{ route('shop') }}">
+                <div class="nav-search-input-wrap">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search Books, Stationery & School Supplies..." aria-label="Search products" />
+                    <button type="submit" class="nav-search-btn" aria-label="Search">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
 
             <nav class="nav-links" :class="{ open: menuOpen }">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
@@ -62,19 +100,21 @@
                             @foreach (\App\Models\Category::active()->get() as $cat)
                                 <a href="{{ route('shop', ['category' => $cat->slug]) }}">{{ $cat->name }}</a>
                             @endforeach
-                            <a href="{{ route('shop', ['sale' => 1]) }}">Sale</a>
                         </div>
                     </div>
                 </div>
 
-                <a href="{{ route('home') }}#about" class="nav-link" @click="menuOpen = false">About</a>
-                <a href="{{ route('home') }}#contact" class="nav-link" @click="menuOpen = false">Contact</a>
+                <a href="{{ route('shop', ['sort' => 'newest']) }}" class="nav-link" @click="menuOpen = false">New
+                    Arrivals</a>
+                <a href="{{ route('shop', ['bestseller' => 1]) }}" class="nav-link" @click="menuOpen = false">Best
+                    Sellers</a>
+                <a href="{{ route('shop', ['sale' => 1]) }}" class="nav-link" @click="menuOpen = false">Offers</a>
             </nav>
 
             <div class="nav-actions">
                 {{-- Theme Toggle --}}
                 <button class="nav-icon"
-                    @click="theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('eliteEssenceTheme', theme)"
+                    @click="theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('bookDepotTheme', theme)"
                     aria-label="Toggle theme">
                     <svg x-show="theme === 'light'" width="20" height="20" fill="none" stroke="currentColor"
                         stroke-width="1.5" viewBox="0 0 24 24">

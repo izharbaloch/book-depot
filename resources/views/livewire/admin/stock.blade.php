@@ -13,6 +13,11 @@
             <div class="stat-card-value">{{ $outOfStockCount }}</div>
             <div class="stat-card-label">Out of Stock</div>
         </div>
+        <div class="stat-card">
+            <div class="stat-card-icon">💰</div>
+            <div class="stat-card-value">${{ number_format($stockValue, 2) }}</div>
+            <div class="stat-card-label">Stock Value</div>
+        </div>
     </div>
 
     <div class="admin-card">
@@ -36,8 +41,11 @@
                     <th>Product</th>
                     <th>SKU</th>
                     <th>Stock</th>
-                    <th>Min Level</th>
+                    <th>Avg Cost</th>
+                    <th>Sale Price</th>
+                    <th>Stock Value</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +54,9 @@
                         <td style="font-weight:500">{{ $product->name }}</td>
                         <td style="color:var(--text-muted)">{{ $product->sku }}</td>
                         <td>{{ $product->stock }}</td>
-                        <td style="color:var(--text-muted)">{{ $product->min_stock_level }}</td>
+                        <td style="color:var(--text-muted)">${{ number_format($product->cost_price, 2) }}</td>
+                        <td style="color:var(--text-muted)">${{ number_format($product->current_price, 2) }}</td>
+                        <td>${{ number_format($product->stock * $product->cost_price, 2) }}</td>
                         <td>
                             @if ($product->stock <= 0)
                                 <span style="font-size:.72rem;padding:.2rem .55rem;border:1px solid #8b1a1a;color:#8b1a1a">Out of Stock</span>
@@ -56,9 +66,46 @@
                                 <span style="font-size:.72rem;padding:.2rem .55rem;border:1px solid #1a5c2c;color:#1a5c2c">In Stock</span>
                             @endif
                         </td>
+                        <td>
+                            <button type="button" wire:click="toggleExpand({{ $product->id }})" class="btn-ghost" style="padding:.35rem .75rem;font-size:.7rem">
+                                {{ $expandedId === $product->id ? 'Hide History' : 'Purchase History' }}
+                            </button>
+                        </td>
                     </tr>
+                    @if ($expandedId === $product->id)
+                        <tr>
+                            <td colspan="8" style="background:var(--bg-alt);padding:1rem 1.5rem">
+                                <table style="width:100%;font-size:.82rem">
+                                    <thead>
+                                        <tr style="color:var(--text-muted)">
+                                            <th style="text-align:left;padding:.35rem 0">Purchase #</th>
+                                            <th style="text-align:left;padding:.35rem 0">Supplier</th>
+                                            <th style="text-align:left;padding:.35rem 0">Date</th>
+                                            <th style="text-align:left;padding:.35rem 0">Qty</th>
+                                            <th style="text-align:left;padding:.35rem 0">Rate</th>
+                                            <th style="text-align:left;padding:.35rem 0">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($purchaseHistory as $line)
+                                            <tr>
+                                                <td style="padding:.35rem 0">{{ $line->purchase->purchase_number }}</td>
+                                                <td style="padding:.35rem 0">{{ $line->purchase->supplier->name }}</td>
+                                                <td style="padding:.35rem 0">{{ $line->purchase->purchase_date->format('M j, Y') }}</td>
+                                                <td style="padding:.35rem 0">{{ $line->quantity }}</td>
+                                                <td style="padding:.35rem 0">${{ number_format($line->purchase_price, 2) }}</td>
+                                                <td style="padding:.35rem 0">${{ number_format($line->subtotal, 2) }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr><td colspan="6" style="padding:.75rem 0;color:var(--text-muted)">No purchase history for this product.</td></tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    @endif
                 @empty
-                    <tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-muted)">No products found.</td></tr>
+                    <tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--text-muted)">No products found.</td></tr>
                 @endforelse
             </tbody>
         </table>

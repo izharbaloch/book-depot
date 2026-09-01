@@ -218,6 +218,7 @@ class Pos extends Component
                         'product_name' => $product->name,
                         'quantity'     => $item['quantity'],
                         'price'        => $item['price'],
+                        'cost_price'   => $product->cost_price,
                         'subtotal'     => $item['price'] * $item['quantity'],
                     ]);
 

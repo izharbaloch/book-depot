@@ -53,7 +53,7 @@
                     <a href="{{ route('shop', ['category' => $cat->slug]) }}"
                         class="category-card reveal {{ $i > 0 ? 'delay-' . $i : '' }}">
                         <div class="cat-img"
-                            style="background:{{ ['linear-gradient(145deg,#c9b8a8,#8d7b6e)', 'linear-gradient(145deg,#2c2c2c,#555)', 'linear-gradient(145deg,#d4c5b0,#b5a48e)', 'linear-gradient(145deg,#8b1a1a,#c0392b)'][$loop->index % 4] }}">
+                            style="background:{{ ['linear-gradient(145deg,#1b3a5c,#2c5580)', 'linear-gradient(145deg,#e8871e,#c96f12)', 'linear-gradient(145deg,#12283f,#1b3a5c)', 'linear-gradient(145deg,#3e6690,#1b3a5c)'][$loop->index % 4] }}">
                             @if ($cat->image)
                                 <img src="{{ $cat->image_url }}" alt="{{ $cat->name }}"
                                     style="width:100%;height:100%;object-fit:cover;opacity:.7" />
@@ -144,6 +144,26 @@
         </div>
     </section>
 
+    {{-- ── SCHOOL ESSENTIALS ── --}}
+    @if ($schoolEssentials->count())
+        <section class="section products-section" style="background:var(--bg-alt)">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <p class="section-eyebrow">Back to Basics</p>
+                        <h2 class="section-title">School Essentials</h2>
+                    </div>
+                    <a href="{{ route('shop', ['category' => 'stationery']) }}" class="section-link">View All →</a>
+                </div>
+                <div class="products-grid">
+                    @foreach ($schoolEssentials as $product)
+                        @livewire('product-card', ['product' => $product], key('essential-' . $product->id))
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- ── WHY CHOOSE US ── --}}
     <section class="section why-section">
         <div class="container">
@@ -198,13 +218,13 @@
                 <h2 class="section-title">What They Say</h2>
             </div>
             <div class="testimonials-grid">
-                @foreach ([['name' => 'Amara K.', 'loc' => 'Lahore', 'text' => '"Found every textbook on my son\'s list in one order, and it arrived well packaged and on time."', 'color' => '#c9b8a8', 'initial' => 'A'], ['name' => 'Lucas M.', 'loc' => 'Karachi', 'text' => '"Book Depot has the best selection of novels and Islamic books in the city. My go-to store now."', 'color' => '#8d7b6e', 'initial' => 'L'], ['name' => 'Sofia R.', 'loc' => 'Islamabad', 'text' => '"Ordering online was effortless and the prices were fair. Already placed two more orders."', 'color' => '#2c2c2c', 'initial' => 'S']] as $i => $t)
+                @foreach ([['name' => 'Amara K.', 'loc' => 'Lahore', 'text' => '"Found every textbook on my son\'s list in one order, and it arrived well packaged and on time."', 'color' => '#1b3a5c', 'initial' => 'A'], ['name' => 'Lucas M.', 'loc' => 'Karachi', 'text' => '"Book Depot has the best selection of novels and Islamic books in the city. My go-to store now."', 'color' => '#e8871e', 'initial' => 'L'], ['name' => 'Sofia R.', 'loc' => 'Islamabad', 'text' => '"Ordering online was effortless and the prices were fair. Already placed two more orders."', 'color' => '#3e6690', 'initial' => 'S']] as $i => $t)
                     <div class="testimonial-card reveal {{ $i > 0 ? 'delay-' . $i : '' }}">
                         <div class="stars">★★★★★</div>
                         <p class="review-text">{{ $t['text'] }}</p>
                         <div class="reviewer">
                             <div class="reviewer-avatar"
-                                style="background:{{ $t['color'] }};color:{{ $t['color'] === '#2c2c2c' ? '#fff' : '#5a4a3a' }}">
+                                style="background:{{ $t['color'] }};color:#fff">
                                 {{ $t['initial'] }}</div>
                             <div>
                                 <strong>{{ $t['name'] }}</strong>

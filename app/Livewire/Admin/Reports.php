@@ -67,41 +67,54 @@ class Reports extends Component
             $byPaymentMethod[$method] = ($byPaymentMethod[$method] ?? 0) + $group->sum('total');
         }
 
+        $revenue = (float) $orders->sum('total') + (float) $sales->sum('total');
+        $cost = (float) OrderItem::whereIn('order_id', $orders->pluck('id'))->selectRaw('COALESCE(SUM(quantity * cost_price), 0) as cost')->value('cost')
+            + (float) SaleItem::whereIn('sale_id', $sales->pluck('id'))->selectRaw('COALESCE(SUM(quantity * cost_price), 0) as cost')->value('cost');
+
         $salesReport = [
             'onlineTotal'     => (float) $orders->sum('total'),
             'onlineCount'     => $orders->count(),
             'posTotal'        => (float) $sales->sum('total'),
             'posCount'        => $sales->count(),
-            'grandTotal'      => (float) $orders->sum('total') + (float) $sales->sum('total'),
+            'grandTotal'      => $revenue,
+            'revenue'         => $revenue,
+            'cost'            => $cost,
+            'grossProfit'     => $revenue - $cost,
             'byPaymentMethod' => $byPaymentMethod,
         ];
 
         $productSales = collect();
         if ($this->tab === 'products') {
             $orderItemStats = OrderItem::whereIn('order_id', $orders->pluck('id'))
-                ->selectRaw('product_id, product_name, SUM(quantity) as qty, SUM(subtotal) as revenue')
+                ->selectRaw('product_id, product_name, SUM(quantity) as qty, SUM(subtotal) as revenue, SUM(quantity * cost_price) as cost')
                 ->groupBy('product_id', 'product_name')
                 ->get();
 
             $saleItemStats = SaleItem::whereIn('sale_id', $sales->pluck('id'))
-                ->selectRaw('product_id, product_name, SUM(quantity) as qty, SUM(subtotal) as revenue')
+                ->selectRaw('product_id, product_name, SUM(quantity) as qty, SUM(subtotal) as revenue, SUM(quantity * cost_price) as cost')
                 ->groupBy('product_id', 'product_name')
                 ->get();
 
             $productSales = $orderItemStats->concat($saleItemStats)
                 ->groupBy('product_name')
-                ->map(fn($rows) => (object) [
-                    'product_name' => $rows->first()->product_name,
-                    'qty'          => $rows->sum('qty'),
-                    'revenue'      => $rows->sum('revenue'),
-                ])
+                ->map(function ($rows) {
+                    $revenue = $rows->sum('revenue');
+                    $cost    = $rows->sum('cost');
+                    return (object) [
+                        'product_name' => $rows->first()->product_name,
+                        'qty'          => $rows->sum('qty'),
+                        'revenue'      => $revenue,
+                        'cost'         => $cost,
+                        'grossProfit'  => $revenue - $cost,
+                    ];
+                })
                 ->sortByDesc('qty')
                 ->values();
         }
 
         $purchases = collect();
         if ($this->tab === 'purchases') {
-            $purchases = Purchase::with('supplier')
+            $purchases = Purchase::with(['supplier', 'items'])
                 ->whereDate('purchase_date', '>=', $this->dateFrom)
                 ->whereDate('purchase_date', '<=', $this->dateTo)
                 ->orderBy('purchase_date', 'desc')

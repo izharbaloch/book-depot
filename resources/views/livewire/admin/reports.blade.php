@@ -45,6 +45,22 @@
                 </div>
             </div>
 
+            <h4 style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem">Profit</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem;margin-bottom:1.5rem">
+                <div class="stat-card">
+                    <div class="stat-card-value">${{ number_format($salesReport['revenue'], 2) }}</div>
+                    <div class="stat-card-label">Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${{ number_format($salesReport['cost'], 2) }}</div>
+                    <div class="stat-card-label">Cost</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${{ number_format($salesReport['grossProfit'], 2) }}</div>
+                    <div class="stat-card-label">Gross Profit</div>
+                </div>
+            </div>
+
             <h4 style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem">Totals by Payment Method</h4>
             <table class="admin-table">
                 <thead><tr><th>Payment Method</th><th style="text-align:right">Total</th></tr></thead>
@@ -58,19 +74,21 @@
             </table>
         @endif
 
-        {{-- ── PRODUCT SALES REPORT ── --}}
+        {{-- ── PRODUCT PROFITABILITY ── --}}
         @if ($tab === 'products')
             <table class="admin-table">
-                <thead><tr><th>Product</th><th>Qty Sold</th><th style="text-align:right">Revenue</th></tr></thead>
+                <thead><tr><th>Product</th><th>Qty Sold</th><th style="text-align:right">Revenue</th><th style="text-align:right">Cost</th><th style="text-align:right">Gross Profit</th></tr></thead>
                 <tbody>
                     @forelse ($productSales as $row)
                         <tr>
                             <td>{{ $row->product_name }}</td>
                             <td>{{ $row->qty }}</td>
                             <td style="text-align:right">${{ number_format($row->revenue, 2) }}</td>
+                            <td style="text-align:right">${{ number_format($row->cost, 2) }}</td>
+                            <td style="text-align:right">${{ number_format($row->grossProfit, 2) }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="3" style="text-align:center;padding:2rem;color:var(--text-muted)">No product sales in this range.</td></tr>
+                        <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-muted)">No product sales in this range.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -83,7 +101,7 @@
                 <div class="stat-card"><div class="stat-card-value">{{ $outOfStockCount }}</div><div class="stat-card-label">Out of Stock</div></div>
             </div>
             <table class="admin-table">
-                <thead><tr><th>Product</th><th>SKU</th><th>Stock</th><th>Min Level</th></tr></thead>
+                <thead><tr><th>Product</th><th>SKU</th><th>Stock</th><th>Min Level</th><th style="text-align:right">Avg Cost</th><th style="text-align:right">Stock Value</th></tr></thead>
                 <tbody>
                     @forelse ($stockProducts as $product)
                         <tr>
@@ -91,9 +109,11 @@
                             <td style="color:var(--text-muted)">{{ $product->sku }}</td>
                             <td style="color:{{ $product->stock <= 0 ? '#8b1a1a' : ($product->stock <= $product->min_stock_level ? '#d4a840' : 'var(--text)') }}">{{ $product->stock }}</td>
                             <td style="color:var(--text-muted)">{{ $product->min_stock_level }}</td>
+                            <td style="text-align:right;color:var(--text-muted)">${{ number_format($product->cost_price, 2) }}</td>
+                            <td style="text-align:right">${{ number_format($product->stock * $product->cost_price, 2) }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-muted)">No products found.</td></tr>
+                        <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">No products found.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -102,17 +122,18 @@
         {{-- ── PURCHASE REPORT ── --}}
         @if ($tab === 'purchases')
             <table class="admin-table">
-                <thead><tr><th>PO #</th><th>Supplier</th><th>Date</th><th style="text-align:right">Total</th></tr></thead>
+                <thead><tr><th>PO #</th><th>Supplier</th><th>Date</th><th style="text-align:right">Quantity</th><th style="text-align:right">Total</th></tr></thead>
                 <tbody>
                     @forelse ($purchases as $purchase)
                         <tr>
                             <td style="font-weight:500">{{ $purchase->purchase_number }}</td>
                             <td style="color:var(--text-muted)">{{ $purchase->supplier->name }}</td>
                             <td style="color:var(--text-muted)">{{ $purchase->purchase_date->format('M j, Y') }}</td>
+                            <td style="text-align:right">{{ $purchase->items->sum('quantity') }}</td>
                             <td style="text-align:right">${{ number_format($purchase->total, 2) }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-muted)">No purchases in this range.</td></tr>
+                        <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-muted)">No purchases in this range.</td></tr>
                     @endforelse
                 </tbody>
             </table>

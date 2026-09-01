@@ -165,6 +165,9 @@ class Product extends Model
         if (!empty($filters['sale'])) {
             $q->whereNotNull('sale_price');
         }
+        if (!empty($filters['bestseller'])) {
+            $q->where('is_bestseller', true);
+        }
         if (!empty($filters['search'])) {
             $q->search($filters['search']);
         }

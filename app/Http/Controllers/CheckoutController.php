@@ -84,6 +84,7 @@ class CheckoutController extends Controller
                         'product_image' => $item->product->image,
                         'quantity'      => $item->quantity,
                         'price'         => $item->price,
+                        'cost_price'    => $item->product->cost_price,
                         'subtotal'      => $item->subtotal,
                     ]);
 

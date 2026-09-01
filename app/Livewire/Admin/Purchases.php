@@ -2,12 +2,17 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Author;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Publisher;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Supplier;
 use App\Services\InventoryService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -26,14 +31,27 @@ class Purchases extends Component
     public string $invoice_number = '';
     public string $notes = '';
 
-    /** @var array<int, array{product_id: string, quantity: string, purchase_price: string}> */
+    public string $itemSearch = '';
+
+    /** @var array<int, array{product_id: int, product_name: string, quantity: string, purchase_price: string}> */
     public array $items = [];
+
+    // ── New Product mini-form ───────────────────────────────
+    public bool $showNewProduct = false;
+    public string $np_name = '';
+    public string $np_category_id = '';
+    public string $np_author_id = '';
+    public string $np_publisher_id = '';
+    public string $np_price = '';
+    public string $np_sku = '';
+    public string $np_isbn = '';
+    public string $np_barcode = '';
 
     public bool $processing = false;
 
     public function mount(): void
     {
-        $this->items = [['product_id' => '', 'quantity' => '1', 'purchase_price' => '']];
+        $this->purchase_date = today()->toDateString();
     }
 
     public function updatedSearch()
@@ -57,9 +75,28 @@ class Purchases extends Component
         $this->showForm = false;
     }
 
-    public function addItem(): void
+    public function addProduct(int $productId): void
     {
-        $this->items[] = ['product_id' => '', 'quantity' => '1', 'purchase_price' => ''];
+        foreach ($this->items as $item) {
+            if ((int) $item['product_id'] === $productId) {
+                $this->itemSearch = '';
+                return;
+            }
+        }
+
+        $product = Product::find($productId);
+        if (!$product) {
+            return;
+        }
+
+        $this->items[] = [
+            'product_id'     => $product->id,
+            'product_name'   => $product->name,
+            'quantity'       => '1',
+            'purchase_price' => (string) $product->cost_price,
+        ];
+
+        $this->itemSearch = '';
     }
 
     public function removeItem(int $index): void
@@ -71,6 +108,90 @@ class Purchases extends Component
     public function toggleExpand(int $id): void
     {
         $this->expandedId = $this->expandedId === $id ? null : $id;
+    }
+
+    public function getItemResultsProperty()
+    {
+        $term = trim($this->itemSearch);
+        if ($term === '') {
+            return collect();
+        }
+
+        return Product::search($term)->limit(8)->get();
+    }
+
+    public function getLineTotalsProperty(): array
+    {
+        return collect($this->items)
+            ->map(fn($item) => (float) ($item['quantity'] ?: 0) * (float) ($item['purchase_price'] ?: 0))
+            ->all();
+    }
+
+    public function getGrandTotalProperty(): float
+    {
+        return array_sum($this->lineTotals);
+    }
+
+    // ── New Product mini-form ───────────────────────────────
+    public function openNewProduct(): void
+    {
+        $this->resetNewProductForm();
+        $this->showNewProduct = true;
+    }
+
+    public function cancelNewProduct(): void
+    {
+        $this->resetNewProductForm();
+        $this->showNewProduct = false;
+    }
+
+    protected function newProductRules(): array
+    {
+        return [
+            'np_name'        => 'required|string|max:180',
+            'np_category_id' => 'required|exists:categories,id',
+            'np_author_id'   => 'nullable|exists:authors,id',
+            'np_publisher_id' => 'nullable|exists:publishers,id',
+            'np_price'       => 'required|numeric|min:0',
+            'np_sku'         => ['nullable', 'string', 'max:60', Rule::unique('products', 'sku')],
+            'np_isbn'        => ['nullable', 'string', 'max:30', Rule::unique('products', 'isbn')],
+            'np_barcode'     => ['nullable', 'string', 'max:60', Rule::unique('products', 'barcode')],
+        ];
+    }
+
+    public function saveNewProduct(): void
+    {
+        $data = $this->validate($this->newProductRules(), [], [
+            'np_name' => 'name', 'np_category_id' => 'category', 'np_author_id' => 'author',
+            'np_publisher_id' => 'publisher', 'np_price' => 'price', 'np_sku' => 'SKU',
+            'np_isbn' => 'ISBN', 'np_barcode' => 'barcode',
+        ]);
+
+        $product = Product::create([
+            'name'            => $data['np_name'],
+            'slug'            => Str::slug($data['np_name']) . '-' . Str::random(4),
+            'category_id'     => $data['np_category_id'],
+            'author_id'       => $data['np_author_id'] ?: null,
+            'publisher_id'    => $data['np_publisher_id'] ?: null,
+            'price'           => $data['np_price'],
+            'cost_price'      => 0,
+            'sku'             => $data['np_sku'] ?: 'BKD-' . strtoupper(Str::random(8)),
+            'isbn'            => $data['np_isbn'] ?: null,
+            'barcode'         => $data['np_barcode'] ?: null,
+            'stock'           => 0,
+            'min_stock_level' => 5,
+            'is_active'       => true,
+        ]);
+
+        $this->cancelNewProduct();
+        $this->addProduct($product->id);
+        session()->flash('success', "\"{$product->name}\" created. Enter its quantity and purchase rate below.");
+    }
+
+    private function resetNewProductForm(): void
+    {
+        $this->reset(['np_name', 'np_category_id', 'np_author_id', 'np_publisher_id', 'np_price', 'np_sku', 'np_isbn', 'np_barcode']);
+        $this->resetErrorBag();
     }
 
     protected function rules(): array
@@ -122,7 +243,7 @@ class Purchases extends Component
                         'subtotal'       => $subtotal,
                     ]);
 
-                    $inventory->adjust($product, (int) $item['quantity'], 'purchase', $purchase, "Received via {$purchase->purchase_number}");
+                    $inventory->receivePurchase($product, (int) $item['quantity'], (float) $item['purchase_price'], $purchase, "Received via {$purchase->purchase_number}");
                 }
             });
 
@@ -136,8 +257,11 @@ class Purchases extends Component
 
     private function resetForm(): void
     {
-        $this->reset(['supplier_id', 'purchase_date', 'invoice_number', 'notes']);
-        $this->items = [['product_id' => '', 'quantity' => '1', 'purchase_price' => '']];
+        $this->reset(['supplier_id', 'invoice_number', 'notes', 'itemSearch']);
+        $this->purchase_date = today()->toDateString();
+        $this->items = [];
+        $this->resetNewProductForm();
+        $this->showNewProduct = false;
         $this->resetErrorBag();
     }
 
@@ -153,9 +277,11 @@ class Purchases extends Component
             ->paginate(15);
 
         return view('livewire.admin.purchases', [
-            'purchases' => $purchases,
-            'suppliers' => Supplier::active()->get(),
-            'products'  => Product::orderBy('name')->get(['id', 'name', 'sku']),
+            'purchases'  => $purchases,
+            'suppliers'  => Supplier::active()->get(),
+            'categories' => Category::orderBy('name')->get(),
+            'authors'    => Author::active()->get(),
+            'publishers' => Publisher::active()->get(),
         ])->extends('layouts.admin');
     }
 }

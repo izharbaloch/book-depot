@@ -11,20 +11,24 @@ class ShopFilter extends Component
 {
     use WithPagination;
 
-    public string $category  = '';
-    public int    $maxPrice  = 3000;
-    public string $author    = '';
-    public string $publisher = '';
-    public string $sort      = 'featured';
-    public string $search    = '';
+    public string $category    = '';
+    public int    $maxPrice    = 3000;
+    public string $author      = '';
+    public string $publisher   = '';
+    public string $sort        = 'featured';
+    public string $search      = '';
+    public bool   $sale        = false;
+    public bool   $bestseller  = false;
 
     protected $queryString = [
-        'category'  => ['except' => ''],
-        'maxPrice'  => ['except' => 3000],
-        'author'    => ['except' => ''],
-        'publisher' => ['except' => ''],
-        'sort'      => ['except' => 'featured'],
-        'search'    => ['except' => ''],
+        'category'   => ['except' => ''],
+        'maxPrice'   => ['except' => 3000],
+        'author'     => ['except' => ''],
+        'publisher'  => ['except' => ''],
+        'sort'       => ['except' => 'featured'],
+        'search'     => ['except' => ''],
+        'sale'       => ['except' => false],
+        'bestseller' => ['except' => false],
     ];
 
     public function updatedCategory()
@@ -54,7 +58,7 @@ class ShopFilter extends Component
 
     public function clearFilters(): void
     {
-        $this->reset(['category', 'maxPrice', 'author', 'publisher', 'sort', 'search']);
+        $this->reset(['category', 'maxPrice', 'author', 'publisher', 'sort', 'search', 'sale', 'bestseller']);
         $this->maxPrice = 3000;
         $this->resetPage();
     }
@@ -62,12 +66,14 @@ class ShopFilter extends Component
     public function render()
     {
         $filters = [
-            'category'  => $this->category,
-            'max_price' => $this->maxPrice,
-            'author'    => $this->author,
-            'publisher' => $this->publisher,
-            'sort'      => $this->sort,
-            'search'    => $this->search,
+            'category'   => $this->category,
+            'max_price'  => $this->maxPrice,
+            'author'     => $this->author,
+            'publisher'  => $this->publisher,
+            'sort'       => $this->sort,
+            'search'     => $this->search,
+            'sale'       => $this->sale,
+            'bestseller' => $this->bestseller,
         ];
 
         return view('livewire.shop-filter', [

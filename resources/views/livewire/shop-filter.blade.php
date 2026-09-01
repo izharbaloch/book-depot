@@ -89,8 +89,9 @@
             </div>
 
             @if ($products->isEmpty())
-                <div style="text-align:center;padding:5rem 2rem;color:var(--text-muted)">
-                    <p style="font-size:1.1rem;margin-bottom:1rem">No products found matching your filters.</p>
+                <div style="text-align:center;padding:5rem 2rem">
+                    <p style="font-family:var(--font-serif);font-weight:700;font-size:1.3rem;color:var(--brand);margin-bottom:.5rem">We couldn't find what you're looking for.</p>
+                    <p style="color:var(--text-muted);margin-bottom:1.5rem">Try another search term, or browse our categories instead.</p>
                     <button class="btn-ghost" wire:click="clearFilters">Clear Filters</button>
                 </div>
             @else

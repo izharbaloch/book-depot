@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title', 'Admin') — Book Depot</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
@@ -22,8 +22,8 @@
         .admin-sidebar {
             width: 260px;
             flex-shrink: 0;
-            background: var(--card-bg);
-            border-right: 1px solid var(--border);
+            background: var(--brand);
+            border-right: 1px solid var(--brand-dark);
             display: flex;
             flex-direction: column;
             position: sticky;
@@ -34,20 +34,23 @@
 
         .admin-sidebar-logo {
             padding: 1.75rem 1.5rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             font-family: var(--font-serif);
-            font-size: 1.4rem;
-            letter-spacing: .25em;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.01em;
         }
 
         .admin-sidebar-logo span {
             display: block;
             font-family: var(--font-sans);
-            font-size: .62rem;
-            letter-spacing: .2em;
+            font-size: .68rem;
+            font-weight: 500;
+            letter-spacing: .1em;
             text-transform: uppercase;
-            color: var(--text-muted);
-            margin-top: .2rem;
+            color: rgba(255, 255, 255, 0.55);
+            margin-top: .3rem;
         }
 
         .admin-nav {
@@ -56,33 +59,36 @@
         }
 
         .admin-nav-section {
-            font-size: .62rem;
-            letter-spacing: .2em;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .12em;
             text-transform: uppercase;
-            color: var(--text-muted);
-            padding: .75rem 1.5rem .35rem;
+            color: rgba(255, 255, 255, 0.4);
+            padding: .9rem 1.5rem .35rem;
         }
 
         .admin-nav-link {
             display: flex;
             align-items: center;
             gap: .75rem;
-            padding: .7rem 1.5rem;
-            font-size: .82rem;
-            color: var(--text-muted);
+            padding: .65rem 1.5rem;
+            font-size: .85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
             transition: all .15s;
-            border-left: 2px solid transparent;
+            border-left: 3px solid transparent;
         }
 
         .admin-nav-link:hover {
-            color: var(--text);
-            background: var(--bg-alt);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .admin-nav-link.active {
-            color: var(--text);
-            border-left-color: var(--text);
-            background: var(--bg-alt);
+            color: #fff;
+            font-weight: 600;
+            border-left-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .admin-main {
@@ -113,6 +119,7 @@
         .admin-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
+            border-radius: var(--radius-md);
             padding: 1.75rem;
             margin-bottom: 1.5rem;
         }
@@ -128,7 +135,9 @@
 
         .admin-card-title {
             font-family: var(--font-serif);
-            font-size: 1.2rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--brand);
         }
 
         .admin-table {
@@ -140,13 +149,13 @@
         .admin-table th {
             padding: .75rem 1rem;
             text-align: left;
-            font-size: .68rem;
-            letter-spacing: .15em;
+            font-size: .7rem;
+            letter-spacing: .08em;
             text-transform: uppercase;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
+            color: var(--brand);
+            border-bottom: 2px solid var(--border);
             background: var(--bg-alt);
-            font-weight: 500;
+            font-weight: 700;
         }
 
         .admin-table td {
@@ -163,9 +172,14 @@
             border-bottom: none;
         }
 
+        .purchase-item-result:hover {
+            background: var(--bg-alt);
+        }
+
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
+            border-radius: var(--radius-md);
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
@@ -174,55 +188,65 @@
 
         .stat-card-value {
             font-family: var(--font-serif);
-            font-size: 2.5rem;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--brand);
             line-height: 1;
         }
 
         .stat-card-label {
-            font-size: .7rem;
-            letter-spacing: .15em;
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .08em;
             text-transform: uppercase;
             color: var(--text-muted);
         }
 
         .stat-card-icon {
-            font-size: 1.75rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            border-radius: var(--radius);
+            background: var(--brand-light);
             margin-bottom: .5rem;
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
-            padding: .2rem .55rem;
-            font-size: .68rem;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            border: 1px solid;
+            padding: .3rem .7rem;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+            border-radius: 999px;
         }
 
         .badge-pending {
-            color: #d4a840;
-            border-color: #d4a840;
+            color: #92670e;
+            background: #92670e1a;
         }
 
         .badge-processing {
             color: #2563eb;
-            border-color: #2563eb;
+            background: #2563eb1a;
         }
 
         .badge-shipped {
             color: #7c3aed;
-            border-color: #7c3aed;
+            background: #7c3aed1a;
         }
 
         .badge-delivered {
-            color: #1a5c2c;
-            border-color: #1a5c2c;
+            color: #1a7a3d;
+            background: #1a7a3d1a;
         }
 
         .badge-cancelled {
-            color: #8b1a1a;
-            border-color: #8b1a1a;
+            color: #b3382c;
+            background: #b3382c1a;
         }
 
         .admin-form-section {
@@ -230,9 +254,10 @@
         }
 
         .admin-form-section h4 {
-            font-size: .72rem;
-            letter-spacing: .15em;
-            text-transform: uppercase;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            color: var(--brand);
             margin-bottom: 1rem;
             padding-bottom: .75rem;
             border-bottom: 1px solid var(--border);
@@ -246,11 +271,10 @@
         {{-- ── SIDEBAR ── --}}
         <aside class="admin-sidebar">
             <div class="admin-sidebar-logo">
-                Book Depot <span>Admin Panel</span>
+                Book Depot <span>Management System</span>
             </div>
             <nav class="admin-nav">
                 @can('manage reports')
-                    <div class="admin-nav-section">Overview</div>
                     <a href="{{ route('admin.dashboard') }}"
                         class="admin-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -263,59 +287,109 @@
                         Dashboard
                     </a>
                 @endcan
-                @can('access pos')
-                    <a href="{{ route('admin.pos.index') }}"
-                        class="admin-nav-link {{ request()->routeIs('admin.pos*') ? 'active' : '' }}">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                            viewBox="0 0 24 24">
-                            <rect x="2" y="7" width="20" height="14" rx="2" />
-                            <path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
-                            <circle cx="12" cy="14" r="2" />
-                        </svg>
-                        Point of Sale
-                    </a>
-                @endcan
 
-                @can('manage products')
-                    <div class="admin-nav-section">Catalog</div>
-                    <a href="{{ route('admin.products.index') }}"
-                        class="admin-nav-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                            viewBox="0 0 24 24">
-                            <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
-                            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
-                        </svg>
-                        Products
-                    </a>
-                    <a href="{{ route('admin.categories.index') }}"
-                        class="admin-nav-link {{ request()->routeIs('admin.categories*') ? 'active' : '' }}">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                            viewBox="0 0 24 24">
-                            <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
-                        </svg>
-                        Categories
-                    </a>
-                    <a href="{{ route('admin.authors.index') }}"
-                        class="admin-nav-link {{ request()->routeIs('admin.authors*') ? 'active' : '' }}">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                            viewBox="0 0 24 24">
-                            <circle cx="12" cy="8" r="4" />
-                            <path d="M4 21v-1a8 8 0 0116 0v1" />
-                        </svg>
-                        Authors
-                    </a>
-                    <a href="{{ route('admin.publishers.index') }}"
-                        class="admin-nav-link {{ request()->routeIs('admin.publishers*') ? 'active' : '' }}">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                            viewBox="0 0 24 24">
-                            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-                        </svg>
-                        Publishers
-                    </a>
-                @endcan
+                @canany(['manage products', 'manage suppliers'])
+                    <div class="admin-nav-section">Store</div>
+                    @can('manage products')
+                        <a href="{{ route('admin.products.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
+                                <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+                            </svg>
+                            Products
+                        </a>
+                        <a href="{{ route('admin.categories.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.categories*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+                            </svg>
+                            Categories
+                        </a>
+                        <a href="{{ route('admin.authors.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.authors*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 21v-1a8 8 0 0116 0v1" />
+                            </svg>
+                            Authors
+                        </a>
+                        <a href="{{ route('admin.publishers.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.publishers*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+                            </svg>
+                            Publishers
+                        </a>
+                    @endcan
+                    @can('manage suppliers')
+                        <a href="{{ route('admin.suppliers.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.suppliers*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <rect x="1" y="3" width="15" height="13" />
+                                <path d="M16 8h4l3 3v5h-7V8z" />
+                            </svg>
+                            Suppliers
+                        </a>
+                    @endcan
+                @endcanany
 
-                @canany(['manage stock', 'manage purchases', 'manage suppliers'])
+                @canany(['access pos', 'manage sales', 'manage orders', 'manage customers'])
+                    <div class="admin-nav-section">Sales</div>
+                    @can('access pos')
+                        <a href="{{ route('admin.pos.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.pos*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <rect x="2" y="7" width="20" height="14" rx="2" />
+                                <path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
+                                <circle cx="12" cy="14" r="2" />
+                            </svg>
+                            POS
+                        </a>
+                    @endcan
+                    @can('manage sales')
+                        <a href="{{ route('admin.sales.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.sales*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                            </svg>
+                            Sales
+                        </a>
+                    @endcan
+                    @can('manage orders')
+                        <a href="{{ route('admin.orders.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path d="M9 11l3 3L22 4" />
+                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                            </svg>
+                            Online Orders
+                        </a>
+                    @endcan
+                    @can('manage customers')
+                        <a href="{{ route('admin.customers.index') }}"
+                            class="admin-nav-link {{ request()->routeIs('admin.customers*') ? 'active' : '' }}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                            </svg>
+                            Customers
+                        </a>
+                    @endcan
+                @endcanany
+
+                @canany(['manage stock', 'manage purchases'])
                     <div class="admin-nav-section">Inventory</div>
                     @can('manage stock')
                         <a href="{{ route('admin.stock.index') }}"
@@ -338,73 +412,10 @@
                             Purchases
                         </a>
                     @endcan
-                    @can('manage suppliers')
-                        <a href="{{ route('admin.suppliers.index') }}"
-                            class="admin-nav-link {{ request()->routeIs('admin.suppliers*') ? 'active' : '' }}">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                viewBox="0 0 24 24">
-                                <rect x="1" y="3" width="15" height="13" />
-                                <path d="M16 8h4l3 3v5h-7V8z" />
-                            </svg>
-                            Suppliers
-                        </a>
-                    @endcan
-                @endcanany
-
-                @canany(['manage orders', 'manage sales'])
-                    <div class="admin-nav-section">Sales</div>
-                    @can('manage orders')
-                        <a href="{{ route('admin.orders.index') }}"
-                            class="admin-nav-link {{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                viewBox="0 0 24 24">
-                                <path d="M9 11l3 3L22 4" />
-                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-                            </svg>
-                            Online Orders
-                        </a>
-                    @endcan
-                    @can('manage sales')
-                        <a href="{{ route('admin.sales.index') }}"
-                            class="admin-nav-link {{ request()->routeIs('admin.sales*') ? 'active' : '' }}">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                viewBox="0 0 24 24">
-                                <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
-                            </svg>
-                            Sales
-                        </a>
-                    @endcan
-                @endcanany
-
-                @canany(['manage customers', 'manage users'])
-                    <div class="admin-nav-section">People</div>
-                    @can('manage customers')
-                        <a href="{{ route('admin.customers.index') }}"
-                            class="admin-nav-link {{ request()->routeIs('admin.customers*') ? 'active' : '' }}">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                viewBox="0 0 24 24">
-                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                                <circle cx="9" cy="7" r="4" />
-                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-                            </svg>
-                            Customers
-                        </a>
-                    @endcan
-                    @can('manage users')
-                        <a href="{{ route('admin.users.index') }}"
-                            class="admin-nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
-                                viewBox="0 0 24 24">
-                                <circle cx="12" cy="8" r="4" />
-                                <path d="M4 21v-1a8 8 0 0116 0v1" />
-                            </svg>
-                            Staff Users
-                        </a>
-                    @endcan
                 @endcanany
 
                 @can('manage reports')
-                    <div class="admin-nav-section">Insights</div>
+                    <div class="admin-nav-section">Reports</div>
                     <a href="{{ route('admin.reports.index') }}"
                         class="admin-nav-link {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -414,10 +425,23 @@
                         Reports
                     </a>
                 @endcan
+
+                @can('manage users')
+                    <div class="admin-nav-section">Admin</div>
+                    <a href="{{ route('admin.users.index') }}"
+                        class="admin-nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21v-1a8 8 0 0116 0v1" />
+                        </svg>
+                        Staff Users
+                    </a>
+                @endcan
             </nav>
-            <div style="padding:1.25rem 1.5rem;border-top:1px solid var(--border)">
+            <div style="padding:1.25rem 1.5rem;border-top:1px solid rgba(255,255,255,0.12)">
                 <a href="{{ route('home') }}"
-                    style="font-size:.75rem;color:var(--text-muted);display:flex;align-items:center;gap:.5rem">
+                    style="font-size:.75rem;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:.5rem">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"
                         viewBox="0 0 24 24">
                         <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
@@ -432,7 +456,7 @@
         <main class="admin-main">
             {{-- Topbar --}}
             <div class="admin-topbar">
-                <h2 style="font-family:var(--font-serif);font-size:1.1rem;font-weight:400">@yield('page_title', 'Dashboard')</h2>
+                <h2 style="font-family:var(--font-serif);font-size:1.1rem;font-weight:700;color:var(--brand)">@yield('page_title', 'Dashboard')</h2>
                 <div style="display:flex;align-items:center;gap:1.25rem">
                     <span style="font-size:.82rem;color:var(--text-muted)">{{ Auth::user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
@@ -449,16 +473,16 @@
             <div style="padding:0 2rem">
                 @if (session('success'))
                     <div
-                        style="background:#1a5c2c22;border:1px solid #1a5c2c;padding:.85rem 1.25rem;margin-top:1.25rem;font-size:.85rem;color:#1a5c2c;display:flex;align-items:center;justify-content:space-between">
+                        style="background:#1a7a3d14;border:1px solid #1a7a3d;border-radius:8px;padding:.85rem 1.25rem;margin-top:1.25rem;font-size:.85rem;font-weight:500;color:#1a7a3d;display:flex;align-items:center;justify-content:space-between">
                         {{ session('success') }}
-                        <button onclick="this.parentElement.remove()" style="font-size:1rem;color:#1a5c2c">✕</button>
+                        <button onclick="this.parentElement.remove()" style="font-size:1rem;color:#1a7a3d">✕</button>
                     </div>
                 @endif
                 @if (session('error'))
                     <div
-                        style="background:#8b1a1a22;border:1px solid #8b1a1a;padding:.85rem 1.25rem;margin-top:1.25rem;font-size:.85rem;color:#8b1a1a;display:flex;align-items:center;justify-content:space-between">
+                        style="background:#b3382c14;border:1px solid #b3382c;border-radius:8px;padding:.85rem 1.25rem;margin-top:1.25rem;font-size:.85rem;font-weight:500;color:#b3382c;display:flex;align-items:center;justify-content:space-between">
                         {{ session('error') }}
-                        <button onclick="this.parentElement.remove()" style="font-size:1rem;color:#8b1a1a">✕</button>
+                        <button onclick="this.parentElement.remove()" style="font-size:1rem;color:#b3382c">✕</button>
                     </div>
                 @endif
             </div>

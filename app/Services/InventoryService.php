@@ -40,4 +40,34 @@ class InventoryService
             ]);
         });
     }
+
+    /**
+     * Receive purchased stock and roll it into the product's weighted-average
+     * cost, so the same product can be bought at different rates over time
+     * without ever overwriting its purchase history.
+     */
+    public function receivePurchase(Product $product, int $quantity, float $unitCost, Model $reference, ?string $notes = null): StockMovement
+    {
+        return DB::transaction(function () use ($product, $quantity, $unitCost, $reference, $notes) {
+            $product = Product::whereKey($product->id)->lockForUpdate()->first();
+
+            $oldStock = $product->stock;
+            $oldCost  = (float) $product->cost_price;
+            $newStock = $oldStock + $quantity;
+            $newCost  = (($oldStock * $oldCost) + ($quantity * $unitCost)) / $newStock;
+
+            $product->update(['stock' => $newStock, 'cost_price' => round($newCost, 2)]);
+
+            return StockMovement::create([
+                'product_id'     => $product->id,
+                'type'           => 'purchase',
+                'quantity'       => $quantity,
+                'balance_after'  => $newStock,
+                'reference_type' => $reference->getMorphClass(),
+                'reference_id'   => $reference->getKey(),
+                'created_by'     => auth()->id(),
+                'notes'          => $notes,
+            ]);
+        });
+    }
 }
