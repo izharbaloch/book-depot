@@ -47,7 +47,7 @@
                             @endforeach
                         </div>
                         @if ($order->status === 'cancelled')
-                            <p style="text-align:center;color:#8b1a1a;font-size:.85rem;margin-top:1rem">This order was
+                            <p style="text-align:center;color:var(--danger);font-size:.85rem;margin-top:1rem">This order was
                                 cancelled.</p>
                         @endif
                     </div>

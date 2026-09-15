@@ -22,7 +22,7 @@
 
         <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
             <input type="text" wire:model.live.debounce.400ms="search" placeholder="Search order # / sale #…"
-                style="padding:.6rem .85rem;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:.85rem;flex:1;min-width:200px" />
+                class="form-input" style="flex:1;min-width:200px" />
             <select wire:model.live="channel" class="filter-select">
                 <option value="">All Channels</option>
                 <option value="online">Online</option>
@@ -37,8 +37,8 @@
                 <option value="stripe">Stripe</option>
                 <option value="paypal">PayPal</option>
             </select>
-            <input type="date" wire:model.live="dateFrom" style="padding:.6rem .85rem;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:.85rem" />
-            <input type="date" wire:model.live="dateTo" style="padding:.6rem .85rem;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:.85rem" />
+            <input type="date" wire:model.live="dateFrom" class="form-input" />
+            <input type="date" wire:model.live="dateTo" class="form-input" />
             <button type="button" wire:click="clearFilters" class="btn-ghost" style="padding:.6rem 1.25rem;font-size:.72rem">Clear</button>
         </div>
 

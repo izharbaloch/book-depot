@@ -5,7 +5,7 @@
 @section('content')
 
     {{-- ── STAT CARDS ── --}}
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-bottom:1.25rem">
+    <div class="stat-grid">
         <div class="stat-card">
             <div class="stat-card-icon">💰</div>
             <div class="stat-card-value">${{ number_format($todaySales, 0) }}</div>
@@ -27,7 +27,7 @@
             <div class="stat-card-label">POS Sales Today</div>
         </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-bottom:2rem">
+    <div class="stat-grid" style="margin-bottom:2rem">
         <div class="stat-card">
             <div class="stat-card-icon">📦</div>
             <div class="stat-card-value">{{ number_format($totalProducts) }}</div>
@@ -50,14 +50,14 @@
         </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start">
+    <div class="split-layout">
 
         {{-- ── Recent Orders ── --}}
         <div class="admin-card">
             <div class="admin-card-header">
                 <h3 class="admin-card-title">Recent Orders</h3>
                 <a href="{{ route('admin.orders.index') }}"
-                    style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)">View
+                    class="text-link">View
                     All →</a>
             </div>
             <table class="admin-table">
@@ -83,7 +83,7 @@
                             <td><span class="badge badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
                             <td style="text-align:right;font-weight:500">${{ number_format($order->total, 2) }}</td>
                             <td><a href="{{ route('admin.orders.show', $order) }}"
-                                    style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)">View</a>
+                                    class="text-link">View</a>
                             </td>
                         </tr>
                     @endforeach
@@ -141,13 +141,13 @@
         </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start;margin-top:1.5rem">
+    <div class="split-layout" style="margin-top:1.5rem">
         {{-- ── Recent POS Sales ── --}}
         <div class="admin-card">
             <div class="admin-card-header">
                 <h3 class="admin-card-title">Recent POS Sales</h3>
                 <a href="{{ route('admin.sales.index') }}"
-                    style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)">View
+                    class="text-link">View
                     All →</a>
             </div>
             <table class="admin-table">
@@ -181,13 +181,13 @@
             <div class="admin-card-header">
                 <h3 class="admin-card-title">Low Stock Products</h3>
                 <a href="{{ route('admin.stock.index') }}"
-                    style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)">View
+                    class="text-link">View
                     All →</a>
             </div>
             @forelse ($lowStockProducts as $product)
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;{{ !$loop->last ? 'border-bottom:1px solid var(--border)' : '' }}">
                     <span style="font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ $product->name }}</span>
-                    <span style="font-size:.8rem;font-weight:500;color:{{ $product->stock <= 0 ? '#8b1a1a' : '#d4a840' }}">{{ $product->stock }} left</span>
+                    <span style="font-size:.8rem;font-weight:500;color:{{ $product->stock <= 0 ? 'var(--danger)' : 'var(--warning)' }}">{{ $product->stock }} left</span>
                 </div>
             @empty
                 <p style="color:var(--text-muted);font-size:.85rem;padding:1rem 0">All products are well stocked.</p>

@@ -30,6 +30,14 @@
     --card-bg: #ffffff;
     --nav-bg: rgba(250, 248, 244, 0.94);
 
+    /* Semantic status colors — used for badges, stock warnings, destructive actions */
+    --danger: #b3382c;
+    --danger-bg: #b3382c1a;
+    --warning: #92670e;
+    --warning-bg: #92670e1a;
+    --success: #1a7a3d;
+    --success-bg: #1a7a3d1a;
+
     --font-serif: 'Poppins', 'Segoe UI', sans-serif;
     --font-sans: 'Inter', system-ui, sans-serif;
 
@@ -56,6 +64,13 @@
     --brand-dark: #2c4b6b;
     --brand-light: #1c2b3a;
     --accent-light: #2e2418;
+
+    --danger: #e0685a;
+    --danger-bg: #e0685a26;
+    --warning: #d4a840;
+    --warning-bg: #d4a84026;
+    --success: #3fb96a;
+    --success-bg: #3fb96a26;
 }
 
 /* ── RESET ──────────────────────────────────────────────── */
@@ -919,6 +934,9 @@ p {
 
 /* ── PRODUCT CARD ────────────────────────────────────────── */
 .product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
@@ -1069,18 +1087,24 @@ p {
 }
 
 .product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     padding: 1.1rem;
 }
 
 .product-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     font-family: var(--font-serif);
     font-size: 1rem;
     font-weight: 600;
+    line-height: 1.3;
+    min-height: calc(1.3em * 2);
     color: var(--text);
     margin-bottom: 0.35rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .product-category {
@@ -1096,6 +1120,7 @@ p {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    margin-top: auto;
     margin-bottom: 0.85rem;
 }
 
@@ -2861,6 +2886,15 @@ input[type="range"] {
 }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
+/* Shop grid sits beside a 240px filter sidebar, so its columns are
+   narrower than the homepage's full-width grid at the same viewport —
+   drop to 3-up sooner to keep card width comparable across pages. */
+@media (max-width: 1400px) {
+    .shop-layout .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media (max-width: 1100px) {
     .products-grid {
         grid-template-columns: repeat(3, 1fr);

@@ -225,8 +225,8 @@
         }
 
         .badge-pending {
-            color: #92670e;
-            background: #92670e1a;
+            color: var(--warning);
+            background: var(--warning-bg);
         }
 
         .badge-processing {
@@ -239,14 +239,16 @@
             background: #7c3aed1a;
         }
 
-        .badge-delivered {
-            color: #1a7a3d;
-            background: #1a7a3d1a;
+        .badge-delivered,
+        .badge-active {
+            color: var(--success);
+            background: var(--success-bg);
         }
 
-        .badge-cancelled {
-            color: #b3382c;
-            background: #b3382c1a;
+        .badge-cancelled,
+        .badge-hidden {
+            color: var(--danger);
+            background: var(--danger-bg);
         }
 
         .admin-form-section {
@@ -261,6 +263,152 @@
             margin-bottom: 1rem;
             padding-bottom: .75rem;
             border-bottom: 1px solid var(--border);
+        }
+
+        /* ── Shared admin utilities (unify inline-style variants found across views) ── */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .btn-danger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: .35rem .75rem;
+            font-size: .7rem;
+            font-weight: 600;
+            background: none;
+            border: 1px solid var(--danger);
+            border-radius: var(--radius);
+            color: var(--danger);
+            font-family: inherit;
+            cursor: pointer;
+            transition: background .2s, color .2s;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-icon-danger {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: .9rem;
+            line-height: 1;
+            transition: opacity .2s;
+        }
+
+        .btn-icon-danger:hover {
+            opacity: .7;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: .6rem .85rem;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
+            font-size: .85rem;
+            border-radius: var(--radius);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--brand);
+        }
+
+        .admin-thumb {
+            width: 48px;
+            height: 60px;
+            flex-shrink: 0;
+            background: var(--bg-alt);
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .admin-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .alert {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 8px;
+            padding: .85rem 1.25rem;
+            margin-top: 1.25rem;
+            font-size: .85rem;
+            font-weight: 500;
+        }
+
+        .alert button {
+            font-size: 1rem;
+            color: inherit;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: var(--danger-bg);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .admin-topbar-logout {
+            font-size: .72rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color .2s;
+        }
+
+        .admin-topbar-logout:hover {
+            color: var(--text);
+        }
+
+        .text-link {
+            font-size: .72rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            transition: color .15s;
+        }
+
+        .text-link:hover {
+            color: var(--brand);
         }
     </style>
 </head>
@@ -461,10 +609,7 @@
                     <span style="font-size:.82rem;color:var(--text-muted)">{{ Auth::user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit"
-                            style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);transition:color .2s"
-                            onmouseover="this.style.color='var(--text)'"
-                            onmouseout="this.style.color='var(--text-muted)'">Logout</button>
+                        <button type="submit" class="admin-topbar-logout">Logout</button>
                     </form>
                 </div>
             </div>
@@ -472,17 +617,15 @@
             {{-- Flash messages --}}
             <div style="padding:0 2rem">
                 @if (session('success'))
-                    <div
-                        style="background:#1a7a3d14;border:1px solid #1a7a3d;border-radius:8px;padding:.85rem 1.25rem;margin-top:1.25rem;font-size:.85rem;font-weight:500;color:#1a7a3d;display:flex;align-items:center;justify-content:space-between">
+                    <div class="alert alert-success">
                         {{ session('success') }}
-                        <button onclick="this.parentElement.remove()" style="font-size:1rem;color:#1a7a3d">✕</button>
+                        <button onclick="this.parentElement.remove()">✕</button>
                     </div>
                 @endif
                 @if (session('error'))
-                    <div
-                        style="background:#b3382c14;border:1px solid #b3382c;border-radius:8px;padding:.85rem 1.25rem;margin-top:1.25rem;font-size:.85rem;font-weight:500;color:#b3382c;display:flex;align-items:center;justify-content:space-between">
+                    <div class="alert alert-error">
                         {{ session('error') }}
-                        <button onclick="this.parentElement.remove()" style="font-size:1rem;color:#b3382c">✕</button>
+                        <button onclick="this.parentElement.remove()">✕</button>
                     </div>
                 @endif
             </div>

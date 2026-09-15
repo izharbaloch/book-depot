@@ -26,7 +26,7 @@
 
         {{-- ── SALES REPORT ── --}}
         @if ($tab === 'sales')
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem;margin-bottom:1.5rem">
+            <div class="stat-grid" style="margin-bottom:1.5rem">
                 <div class="stat-card">
                     <div class="stat-card-value">${{ number_format($salesReport['grandTotal'], 2) }}</div>
                     <div class="stat-card-label">Total Sales</div>
@@ -46,7 +46,7 @@
             </div>
 
             <h4 style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem">Profit</h4>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem;margin-bottom:1.5rem">
+            <div class="stat-grid" style="margin-bottom:1.5rem">
                 <div class="stat-card">
                     <div class="stat-card-value">${{ number_format($salesReport['revenue'], 2) }}</div>
                     <div class="stat-card-label">Revenue</div>
@@ -96,7 +96,7 @@
 
         {{-- ── STOCK REPORT ── --}}
         @if ($tab === 'stock')
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem;margin-bottom:1.5rem">
+            <div class="stat-grid" style="margin-bottom:1.5rem">
                 <div class="stat-card"><div class="stat-card-value">{{ $lowStockCount }}</div><div class="stat-card-label">Low Stock</div></div>
                 <div class="stat-card"><div class="stat-card-value">{{ $outOfStockCount }}</div><div class="stat-card-label">Out of Stock</div></div>
             </div>
@@ -107,7 +107,7 @@
                         <tr>
                             <td>{{ $product->name }}</td>
                             <td style="color:var(--text-muted)">{{ $product->sku }}</td>
-                            <td style="color:{{ $product->stock <= 0 ? '#8b1a1a' : ($product->stock <= $product->min_stock_level ? '#d4a840' : 'var(--text)') }}">{{ $product->stock }}</td>
+                            <td style="color:{{ $product->stock <= 0 ? 'var(--danger)' : ($product->stock <= $product->min_stock_level ? 'var(--warning)' : 'var(--text)') }}">{{ $product->stock }}</td>
                             <td style="color:var(--text-muted)">{{ $product->min_stock_level }}</td>
                             <td style="text-align:right;color:var(--text-muted)">${{ number_format($product->cost_price, 2) }}</td>
                             <td style="text-align:right">${{ number_format($product->stock * $product->cost_price, 2) }}</td>

@@ -9,7 +9,7 @@
 
         <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
             <input type="text" wire:model.live.debounce.400ms="search" placeholder="Search name, phone, email…"
-                style="padding:.6rem .85rem;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:.85rem;flex:1;min-width:200px" />
+                class="form-input" style="flex:1;min-width:200px" />
         </div>
 
         <table class="admin-table">

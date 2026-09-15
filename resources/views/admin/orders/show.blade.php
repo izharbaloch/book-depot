@@ -132,7 +132,7 @@
                         style="text-transform:uppercase">{{ $order->payment_method }}</span></div>
                 <div class="summary-line"><span>Pay Status</span>
                     <span
-                        style="color:{{ $order->payment_status === 'paid' ? '#1a5c2c' : '#d4a840' }}">{{ ucfirst($order->payment_status) }}</span>
+                        style="color:{{ $order->payment_status === 'paid' ? 'var(--success)' : 'var(--warning)' }}">{{ ucfirst($order->payment_status) }}</span>
                 </div>
                 @if ($order->user)
                     <div class="summary-line"><span>Customer</span><a href="{{ route('admin.users.show', $order->user) }}"

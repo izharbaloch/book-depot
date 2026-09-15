@@ -14,7 +14,7 @@
         <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
             <input type="text" wire:model.live.debounce.400ms="search"
                 placeholder="Search name, SKU, ISBN, barcode, author, publisher…"
-                style="padding:.6rem .85rem;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:.85rem;flex:1;min-width:220px" />
+                class="form-input" style="flex:1;min-width:220px" />
 
             <select wire:model.live="categoryFilter" class="filter-select">
                 <option value="">All Categories</option>
@@ -53,7 +53,7 @@
         </div>
 
         @if (session('error'))
-            <div style="background:#8b1a1a22;border:1px solid #8b1a1a;padding:.85rem 1.25rem;margin-bottom:1.5rem;font-size:.85rem;color:#8b1a1a">{{ session('error') }}</div>
+            <div class="alert alert-error" style="margin-top:0;margin-bottom:1.5rem">{{ session('error') }}</div>
         @endif
 
         {{-- ── Same-page form: Add / Edit ── --}}
@@ -64,7 +64,7 @@
                 </div>
 
                 <form wire:submit.prevent="save">
-                    <div style="display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start">
+                    <div class="split-layout">
                         {{-- Left column --}}
                         <div>
                             <div class="admin-form-section">
@@ -73,7 +73,7 @@
                                     <div class="form-group full">
                                         <label>Product / Book Name *</label>
                                         <input type="text" wire:model="name" placeholder="e.g. Pride and Prejudice" autofocus />
-                                        @error('name') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('name') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Category *</label>
@@ -83,7 +83,7 @@
                                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                             @endforeach
                                         </select>
-                                        @error('category_id') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('category_id') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Author</label>
@@ -106,17 +106,17 @@
                                     <div class="form-group">
                                         <label>SKU <span style="font-size:.72rem;color:var(--text-muted)">(auto if blank)</span></label>
                                         <input type="text" wire:model="sku" placeholder="BKD-XXXXXXXX" />
-                                        @error('sku') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('sku') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>ISBN</label>
                                         <input type="text" wire:model="isbn" placeholder="978-XXXXXXXXXX" />
-                                        @error('isbn') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('isbn') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Barcode</label>
                                         <input type="text" wire:model="barcode" placeholder="Scannable barcode" />
-                                        @error('barcode') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('barcode') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom:1rem">
@@ -139,12 +139,12 @@
                                     <div class="form-group">
                                         <label>Sale Price ($) *</label>
                                         <input type="number" wire:model="price" step="0.01" min="0" placeholder="0.00" />
-                                        @error('price') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('price') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Discount Price ($) <span style="font-size:.72rem;color:var(--text-muted)">(optional)</span></label>
                                         <input type="number" wire:model="sale_price" step="0.01" min="0" placeholder="Leave blank if none" />
-                                        @error('sale_price') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('sale_price') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Purchase / Cost Price ($)</label>
@@ -153,12 +153,12 @@
                                     <div class="form-group">
                                         <label>Stock Quantity *</label>
                                         <input type="number" wire:model="stock" min="0" />
-                                        @error('stock') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('stock') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Minimum Stock Level *</label>
                                         <input type="number" wire:model="min_stock_level" min="0" />
-                                        @error('min_stock_level') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                        @error('min_stock_level') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Weight (kg) <span style="font-size:.72rem;color:var(--text-muted)">(optional)</span></label>
@@ -185,7 +185,7 @@
                                     <input type="file" wire:model="image" accept="image/*"
                                         style="width:100%;padding:.65rem;border:1px solid var(--border);background:var(--bg);font-family:inherit;font-size:.82rem" />
                                     <p style="font-size:.72rem;color:var(--text-muted);margin-top:.5rem">JPG, PNG, WEBP. Max 3MB.</p>
-                                    @error('image') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                                    @error('image') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div class="admin-form-section">
@@ -251,9 +251,9 @@
                     <tr wire:key="product-{{ $product->id }}">
                         <td>
                             <div style="display:flex;align-items:center;gap:.85rem">
-                                <div style="width:48px;height:60px;flex-shrink:0;background:var(--bg-alt);overflow:hidden">
+                                <div class="admin-thumb">
                                     @if ($product->image)
-                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" style="width:100%;height:100%;object-fit:cover" />
+                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" />
                                     @endif
                                 </div>
                                 <div>
@@ -269,29 +269,26 @@
                         <td style="color:var(--text-muted)">{{ $product->category->name }}</td>
                         <td>
                             @if ($product->is_on_sale)
-                                <span style="color:#c0392b;font-weight:500">${{ number_format($product->sale_price, 2) }}</span>
+                                <span style="color:var(--accent-dark);font-weight:500">${{ number_format($product->sale_price, 2) }}</span>
                                 <span style="text-decoration:line-through;color:var(--text-muted);font-size:.78rem;margin-left:.25rem">${{ number_format($product->price, 2) }}</span>
                             @else
                                 ${{ number_format($product->price, 2) }}
                             @endif
                         </td>
                         <td>
-                            <span style="color:{{ $product->stock > $product->min_stock_level ? 'var(--text)' : ($product->stock > 0 ? '#d4a840' : '#8b1a1a') }}">
+                            <span style="color:{{ $product->stock > $product->min_stock_level ? 'var(--text)' : ($product->stock > 0 ? 'var(--warning)' : 'var(--danger)') }}">
                                 {{ $product->stock }}
                             </span>
                         </td>
                         <td>
-                            <span style="font-size:.72rem;padding:.2rem .55rem;border:1px solid;
-                                border-color:{{ $product->is_active ? '#1a5c2c' : '#8b1a1a' }};
-                                color:{{ $product->is_active ? '#1a5c2c' : '#8b1a1a' }}">
+                            <span class="badge {{ $product->is_active ? 'badge-active' : 'badge-hidden' }}">
                                 {{ $product->is_active ? 'Active' : 'Hidden' }}
                             </span>
                         </td>
                         <td>
                             <div style="display:flex;gap:.5rem">
                                 <button type="button" wire:click="openEdit({{ $product->id }})" class="btn-ghost" style="padding:.35rem .75rem;font-size:.7rem">Edit</button>
-                                <button type="button" wire:click="delete({{ $product->id }})" wire:confirm="Delete this product?"
-                                    style="padding:.35rem .75rem;font-size:.7rem;border:1px solid #8b1a1a;color:#8b1a1a;background:none;cursor:pointer;font-family:inherit">Delete</button>
+                                <button type="button" wire:click="delete({{ $product->id }})" wire:confirm="Delete this product?" class="btn-danger">Delete</button>
                             </div>
                         </td>
                     </tr>

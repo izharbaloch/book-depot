@@ -12,11 +12,11 @@
 
         <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
             <input type="text" wire:model.live.debounce.400ms="search" placeholder="Search authors…"
-                style="padding:.6rem .85rem;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:.85rem;flex:1;min-width:200px" />
+                class="form-input" style="flex:1;min-width:200px" />
         </div>
 
         @if (session('error'))
-            <div style="background:#8b1a1a22;border:1px solid #8b1a1a;padding:.85rem 1.25rem;margin-bottom:1.5rem;font-size:.85rem;color:#8b1a1a">{{ session('error') }}</div>
+            <div class="alert alert-error" style="margin-top:0;margin-bottom:1.5rem">{{ session('error') }}</div>
         @endif
 
         @if ($showForm)
@@ -29,7 +29,7 @@
                         <div class="form-group full">
                             <label>Author Name *</label>
                             <input type="text" wire:model="name" placeholder="e.g. Mark Twain" autofocus />
-                            @error('name') <span style="color:#8b1a1a;font-size:.75rem">{{ $message }}</span> @enderror
+                            @error('name') <span style="color:var(--danger);font-size:.75rem">{{ $message }}</span> @enderror
                         </div>
                         <div class="form-group full">
                             <label>Bio <span style="font-size:.72rem;color:var(--text-muted)">(optional)</span></label>
@@ -66,9 +66,7 @@
                         <td style="font-weight:500">{{ $author->name }}</td>
                         <td>{{ $author->products_count }}</td>
                         <td>
-                            <span style="font-size:.72rem;padding:.2rem .55rem;border:1px solid;
-                                border-color:{{ $author->is_active ? '#1a5c2c' : '#8b1a1a' }};
-                                color:{{ $author->is_active ? '#1a5c2c' : '#8b1a1a' }}">
+                            <span class="badge {{ $author->is_active ? 'badge-active' : 'badge-hidden' }}">
                                 {{ $author->is_active ? 'Active' : 'Inactive' }}
                             </span>
                         </td>
@@ -78,8 +76,7 @@
                                 <button type="button" wire:click="toggleActive({{ $author->id }})" class="btn-ghost" style="padding:.35rem .75rem;font-size:.7rem">
                                     {{ $author->is_active ? 'Deactivate' : 'Activate' }}
                                 </button>
-                                <button type="button" wire:click="delete({{ $author->id }})" wire:confirm="Delete this author?"
-                                    style="padding:.35rem .75rem;font-size:.7rem;border:1px solid #8b1a1a;color:#8b1a1a;background:none;cursor:pointer;font-family:inherit">Delete</button>
+                                <button type="button" wire:click="delete({{ $author->id }})" wire:confirm="Delete this author?" class="btn-danger">Delete</button>
                             </div>
                         </td>
                     </tr>

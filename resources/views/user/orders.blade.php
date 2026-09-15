@@ -56,8 +56,8 @@
                                     <td style="padding:1rem 1.25rem">
                                         <span
                                             style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border:1px solid;
-                                    border-color:{{ ['pending' => '#d4a840', 'processing' => '#2563eb', 'shipped' => '#7c3aed', 'delivered' => '#1a5c2c', 'cancelled' => '#8b1a1a'][$order->status] ?? 'var(--border)' }};
-                                    color:{{ ['pending' => '#d4a840', 'processing' => '#2563eb', 'shipped' => '#7c3aed', 'delivered' => '#1a5c2c', 'cancelled' => '#8b1a1a'][$order->status] ?? 'var(--text-muted)' }}">
+                                    border-color:{{ ['pending' => 'var(--warning)', 'processing' => '#2563eb', 'shipped' => '#7c3aed', 'delivered' => 'var(--success)', 'cancelled' => 'var(--danger)'][$order->status] ?? 'var(--border)' }};
+                                    color:{{ ['pending' => 'var(--warning)', 'processing' => '#2563eb', 'shipped' => '#7c3aed', 'delivered' => 'var(--success)', 'cancelled' => 'var(--danger)'][$order->status] ?? 'var(--text-muted)' }}">
                                             {{ $order->status_icon }} {{ ucfirst($order->status) }}
                                         </span>
                                     </td>

@@ -15,23 +15,33 @@
             <div class="product-detail-grid">
                 {{-- ── Gallery ── --}}
                 <div class="pdp-gallery">
-                    <div class="pdp-thumbs" id="pdpThumbs">
-                        <div class="pdp-thumb active" onclick="switchPdpImg(this, '{{ $product->image_url }}')">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy"
-                                style="width:100%;height:100%;object-fit:cover" />
-                        </div>
-                        @foreach ($product->gallery_urls as $gImg)
-                            <div class="pdp-thumb" onclick="switchPdpImg(this, '{{ $gImg }}')">
-                                <img src="{{ $gImg }}" alt="{{ $product->name }}" loading="lazy"
+                    @if ($product->image)
+                        <div class="pdp-thumbs" id="pdpThumbs">
+                            <div class="pdp-thumb active" onclick="switchPdpImg(this, '{{ $product->image_url }}')">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy"
                                     style="width:100%;height:100%;object-fit:cover" />
                             </div>
-                        @endforeach
-                    </div>
-                    <div class="pdp-main-img" id="pdpMainImg">
-                        <img id="pdpMainImgEl" src="{{ $product->image_url }}" alt="{{ $product->name }}"
-                            style="width:100%;height:100%;object-fit:cover" />
-                        <div class="pdp-zoom-hint">+ Click to Zoom</div>
-                    </div>
+                            @foreach ($product->gallery_urls as $gImg)
+                                <div class="pdp-thumb" onclick="switchPdpImg(this, '{{ $gImg }}')">
+                                    <img src="{{ $gImg }}" alt="{{ $product->name }}" loading="lazy"
+                                        style="width:100%;height:100%;object-fit:cover" />
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="pdp-main-img" id="pdpMainImg">
+                            <img id="pdpMainImgEl" src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                style="width:100%;height:100%;object-fit:cover" />
+                            <div class="pdp-zoom-hint">+ Click to Zoom</div>
+                        </div>
+                    @else
+                        <div class="pdp-main-img" id="pdpMainImg">
+                            <div style="width:100%;height:100%;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;opacity:.3">
+                                <svg width="110" height="165" viewBox="0 0 70 105" fill="var(--text)">
+                                    <path d="M20 0 C20 18 50 18 50 0 L65 14 L70 105 L0 105 L5 14Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- ── Info ── --}}
@@ -96,7 +106,7 @@
                         <div class="pdp-meta-row"><strong>Shipping</strong><span>Free on orders over $150</span></div>
                         <div class="pdp-meta-row"><strong>Returns</strong><span>30-day free returns</span></div>
                         <div class="pdp-meta-row"><strong>Stock</strong>
-                            <span style="color:{{ $product->stock > $product->min_stock_level ? '#1a5c2c' : '#8b1a1a' }}">
+                            <span style="color:{{ $product->stock > $product->min_stock_level ? 'var(--success)' : 'var(--danger)' }}">
                                 {{ $product->stock > $product->min_stock_level ? 'In Stock (' . $product->stock . ' available)' : ($product->stock > 0 ? 'Only ' . $product->stock . ' left!' : 'Out of Stock') }}
                             </span>
                         </div>
